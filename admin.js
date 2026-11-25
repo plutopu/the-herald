@@ -53,7 +53,7 @@ async function diagnose(err) {
 }
 
 function ghFetch(path, options) {
-  return fetch(`https://api.github.com/repos/${repo}/${path}`, {
+  return fetch(`https://api.github.com/repos/${repo}` + (path ? `/${path}` : ""), {
     ...options,
     cache: "no-store",
     headers: {
