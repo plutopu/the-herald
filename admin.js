@@ -29,9 +29,19 @@ function guessRepo() {
 async function gh(path, options = {}) {
   try {
     return await ghFetch(path, options);
-  } catch {
-    throw new Error("Couldn't reach GitHub. Check your internet connection, and turn off any content blocker, VPN or Private Relay for this page, then try again.");
+  } catch (err) {
+    throw new Error(await diagnose(err));
   }
+}
+
+async function diagnose(err) {
+  const detail = `(${err.name}: ${err.message})`;
+  try {
+    await fetch(`https://api.github.com/repos/${repo}`, { cache: "no-store" });
+  } catch {
+    return `This page can't reach GitHub at all ${detail}. A content blocker or browser setting is probably blocking it. Try another browser, or turn blockers off for this site.`;
+  }
+  return `GitHub is reachable, but the browser refused to send the request with your token ${detail}. Paste the token again; if it still fails, note this message.`;
 }
 
 function ghFetch(path, options) {
@@ -41,7 +51,6 @@ function ghFetch(path, options) {
     headers: {
       Authorization: `Bearer ${token}`,
       Accept: "application/vnd.github+json",
-      "X-GitHub-Api-Version": "2022-11-28",
       ...(options.body ? { "Content-Type": "application/json" } : {}),
     },
   });
