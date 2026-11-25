@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://api.github.com; form-action 'none'; base-uri 'none'">
+<title>admin — the herald</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alata&family=Bebas+Neue&family=Roboto:ital,wght@0,400;0,700;1,400&family=Roboto+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="style.css">
+<script src="theme.js"></script>
+<script src="site.js" defer></script>
+<script src="admin.js" defer></script>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="brand" href="admin.html">the herald</a>
+    <div class="header-right">
+    <nav id="nav" hidden>
+      <a href="./">View site</a>
+      <button class="linklike" id="logout" type="button">Log out</button>
+    </nav>
+    <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle dark mode">☾</button>
+    </div>
+  </header>
+
+  <!-- Shown when not logged in on this device -->
+  <section id="login" hidden>
+    <h1>Log in</h1>
+    <form id="login-form">
+      <label for="repo">GitHub repository (owner/name)</label>
+      <input id="repo" required placeholder="yourname/the_herald" autocapitalize="off" autocorrect="off" spellcheck="false">
+      <label for="token">GitHub token</label>
+      <input id="token" type="password" required autocomplete="current-password">
+      <p class="help">
+        Create one at <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">GitHub → Fine-grained tokens</a>:
+        choose <em>Only select repositories</em> → this repo, then under <em>Repository permissions</em> set
+        <em>Contents</em> to <em>Read and write</em>. It's stored only in this browser.
+      </p>
+      <div class="buttons"><button class="primary" type="submit">Log in</button></div>
+    </form>
+    <p id="login-msg" class="notice error" hidden></p>
+  </section>
+
+  <!-- Shown after login -->
+  <section id="panel" hidden>
+    <h1 id="form-heading">New post</h1>
+    <form id="post-form">
+      <label for="title">Title</label>
+      <input id="title" maxlength="200" required>
+      <label for="body">Text (leave a blank line between paragraphs)</label>
+      <textarea id="body" required></textarea>
+      <div class="buttons">
+        <button class="primary" id="save" type="submit">Publish</button>
+        <button class="secondary" id="cancel" type="button" hidden>Cancel editing</button>
+      </div>
+    </form>
+    <p id="msg" class="notice" hidden></p>
+
+    <h2>Published</h2>
+    <ul class="manage" id="list"></ul>
+
+    <h2>Announcements</h2>
+    <p class="help">Short notices that scroll across the top of the site. They disappear by themselves after their end date.</p>
+    <form id="ticker-form">
+      <label for="ticker-text">Text</label>
+      <input id="ticker-text" maxlength="140" required placeholder="Students on strike until 2 Dec">
+      <label for="ticker-until">Show until (optional)</label>
+      <input id="ticker-until" type="date">
+      <div class="buttons"><button class="primary" type="submit">Add announcement</button></div>
+    </form>
+    <p id="ticker-msg" class="notice" hidden></p>
+    <ul class="manage" id="ticker-list"></ul>
+  </section>
+</div>
+</body>
+</html>
