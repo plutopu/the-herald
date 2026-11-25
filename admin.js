@@ -27,6 +27,14 @@ function guessRepo() {
 // ---------- GitHub API ----------
 
 async function gh(path, options = {}) {
+  try {
+    return await ghFetch(path, options);
+  } catch {
+    throw new Error("Couldn't reach GitHub. Check your internet connection, and turn off any content blocker, VPN or Private Relay for this page, then try again.");
+  }
+}
+
+function ghFetch(path, options) {
   return fetch(`https://api.github.com/repos/${repo}/${path}`, {
     ...options,
     cache: "no-store",
@@ -295,7 +303,7 @@ async function showPanel() {
 $("login-form").onsubmit = (e) => {
   e.preventDefault();
   repo = $("repo").value.trim().replace(/^https:\/\/github\.com\//, "").replace(/\/+$/, "");
-  token = $("token").value.trim();
+  token = $("token").value.replace(/[^\x21-\x7E]/g, "");
   busy(async () => {
     try {
       await showPanel();
