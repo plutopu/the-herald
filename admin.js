@@ -26,6 +26,14 @@ function guessRepo() {
 
 // ---------- GitHub API ----------
 
+async function resolveRepo(name) {
+  try {
+    const res = await fetch(`https://api.github.com/repos/${name}`, { cache: "no-store" });
+    if (res.ok) return (await res.json()).full_name;
+  } catch {}
+  return name;
+}
+
 async function gh(path, options = {}) {
   try {
     return await ghFetch(path, options);
@@ -41,7 +49,7 @@ async function diagnose(err) {
   } catch {
     return `This page can't reach GitHub at all ${detail}. A content blocker or browser setting is probably blocking it. Try another browser, or turn blockers off for this site.`;
   }
-  return `GitHub is reachable, but the browser refused to send the request with your token ${detail}. Paste the token again; if it still fails, note this message.`;
+  return `GitHub is reachable, but the browser refused to send the request with your token to ${repo} ${detail}. Paste the token again; if it still fails, note this message.`;
 }
 
 function ghFetch(path, options) {
@@ -315,6 +323,8 @@ $("login-form").onsubmit = (e) => {
   token = $("token").value.replace(/[^\x21-\x7E]/g, "");
   busy(async () => {
     try {
+      repo = await resolveRepo(repo);
+      $("repo").value = repo;
       await showPanel();
       store.set("herald_repo", repo);
       store.set("herald_token", token);
@@ -339,6 +349,7 @@ $("logout").onclick = () => {
 (async () => {
   if (!token || !repo) return showLogin();
   try {
+    repo = await resolveRepo(repo);
     await showPanel();
   } catch (err) {
     showLogin(err.message);
