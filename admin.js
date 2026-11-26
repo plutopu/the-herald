@@ -176,7 +176,9 @@ function renderPosts() {
     const a = document.createElement("a");
     a.href = postUrl(post);
     a.textContent = post.title;
-    return listRow(a, formatDate(post.createdAt),
+    const sub = formatDate(post.createdAt) + (post.pinnedAt ? ` · pinned as “${post.pinLabel}”` : "");
+    return listRow(a, sub,
+      button(post.pinnedAt ? "Unpin" : "Pin", () => togglePin(post)),
       button("Edit", () => startEditing(post)),
       button("Delete", () => deletePost(post)));
   }));
@@ -230,6 +232,37 @@ $("post-form").onsubmit = (e) => {
 };
 
 $("cancel").onclick = () => { resetForm(); message(""); };
+
+function togglePin(post) {
+  const posts = files.posts.data;
+  let next, note;
+  if (post.pinnedAt) {
+    next = posts.map((p) => {
+      if (p.id !== post.id) return p;
+      const { pinnedAt, pinLabel, ...rest } = p;
+      return rest;
+    });
+    note = `Unpin: ${post.title}`;
+  } else {
+    if (pinnedPosts(posts).length >= MAX_PINS) {
+      return message(`You can pin up to ${MAX_PINS} posts. Unpin one first.`, "error");
+    }
+    const label = prompt("Button text (keep it short):", post.title.slice(0, 30));
+    if (label === null) return;
+    const pinLabel = label.trim().slice(0, 40) || post.title.slice(0, 40);
+    next = posts.map((p) => (p.id === post.id ? { ...p, pinLabel, pinnedAt: new Date().toISOString() } : p));
+    note = `Pin: ${post.title}`;
+  }
+  busy(async () => {
+    try {
+      await save("posts", next, note);
+      renderPosts();
+      message(post.pinnedAt ? "Unpinned. The site updates in about a minute." : "Pinned. The button appears on the site in about a minute.");
+    } catch (err) {
+      message(err.message, "error");
+    }
+  });
+}
 
 function deletePost(post) {
   if (!confirm(`Delete “${post.title}”? This can't be undone from here.`)) return;

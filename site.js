@@ -106,6 +106,26 @@ function renderTicker(el, items) {
   track.style.setProperty("--duration", `${Math.max(group.scrollWidth / TICKER_SPEED, 12)}s`);
 }
 
+const MAX_PINS = 3;
+
+function pinnedPosts(posts) {
+  return posts.filter((p) => p.pinnedAt).sort((a, b) => a.pinnedAt.localeCompare(b.pinnedAt)).slice(0, MAX_PINS);
+}
+
+function renderPins(el, posts, currentId) {
+  const pinned = pinnedPosts(posts);
+  if (!pinned.length) return;
+  el.replaceChildren(...pinned.map((post) => {
+    const a = document.createElement("a");
+    a.href = postUrl(post);
+    a.textContent = post.pinLabel || post.title;
+    a.title = post.title;
+    if (post.id === currentId) a.setAttribute("aria-current", "page");
+    return a;
+  }));
+  el.hidden = false;
+}
+
 function showMessage(container, text) {
   const p = document.createElement("p");
   p.className = "empty";

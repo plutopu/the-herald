@@ -119,3 +119,14 @@ ul.manage button { font: 14px var(--font-ui); color: var(--accent); background: 
 
 .ticker-until { font: 12px var(--font-mono); color: var(--muted); }
 ul.manage .info strong { display: block; font: 16px var(--font-ui); font-weight: normal; overflow-wrap: anywhere; }
+
+/* ---------- pinned links ---------- */
+.pins { display: flex; gap: 8px; margin: 10px 0 4px; }
+.pins a { flex: 1 1 0; min-width: 0; text-align: center; padding: 10px 12px;
+          font: 15px/1.2 var(--font-ui); color: var(--fg); text-decoration: none;
+          border: 1.5px solid var(--fg); border-radius: 8px;
+          white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pins a:hover, .pins a[aria-current="page"] { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); }
+ul.manage li { flex-wrap: wrap; }
+ul.manage .info { flex-basis: 100%; }
+@media (min-width: 520px) { ul.manage li { flex-wrap: nowrap; } ul.manage .info { flex-basis: auto; } }

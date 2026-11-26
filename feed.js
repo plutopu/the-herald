@@ -8,6 +8,7 @@ fetchAnnouncements()
   try {
     const posts = await fetchPublishedPosts();
     const id = new URLSearchParams(location.search).get("id");
+    renderPins(document.getElementById("pins"), posts, id);
 
     if (main.id === "single") {
       const post = posts.find((p) => p.id === id);
