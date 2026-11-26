@@ -9,21 +9,21 @@
 /* ---------- colours ----------*/
 :root {
   --bg: #f3f2ee; --surface: #ffffff; --fg: #16161a; --muted: #6c6b70; --line: #dddbd4;
-  --accent: #d9481e; --accent-fg: #ffffff;
+  --accent: #b73188; --accent-fg: #ffffff;
   --err-bg: #fbe0d8; --err-fg: #7a210b; --ok-bg: #dcefe2; --ok-fg: #17462a;
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #101114; --surface: #17191d; --fg: #e8e6e1; --muted: #8d8f96; --line: #272a30;
-    --accent: #ff7a4d; --accent-fg: #101114;
+    --accent: #e070b4; --accent-fg: #101114;
     --err-bg: #3d1a12; --err-fg: #ffc9b8; --ok-bg: #15301f; --ok-fg: #bfe8cc;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #101114; --surface: #17191d; --fg: #e8e6e1; --muted: #8d8f96; --line: #272a30;
-  --accent: #ff7a4d; --accent-fg: #101114;
+  --accent: #e070b4; --accent-fg: #101114;
   --err-bg: #3d1a12; --err-fg: #ffc9b8; --ok-bg: #15301f; --ok-fg: #bfe8cc;
   color-scheme: dark;
 }

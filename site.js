@@ -1,6 +1,3 @@
-// Shared helpers for the public pages and the admin page.
-// Everything is rendered with textContent, so post text can never inject HTML.
-
 function formatDate(iso) {
   return new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
 }

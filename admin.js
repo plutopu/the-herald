@@ -304,7 +304,6 @@ $("ticker-form").onsubmit = (e) => {
 
   busy(async () => {
     try {
-      // Drop announcements that have already ended, so the file doesn't grow forever.
       const kept = files.ticker.data.filter(isActive);
       const item = { id: crypto.randomUUID(), text, until };
       await save("ticker", [...kept, item], `Announcement: ${text}`);
