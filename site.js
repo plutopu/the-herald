@@ -65,7 +65,7 @@ async function fetchAnnouncements() {
   return (await res.json()).filter(isActive);
 }
 
-const TICKER_SPEED = 10;
+const TICKER_SPEED = 20;
 
 function renderTicker(el, items) {
   if (!items.length) return;
